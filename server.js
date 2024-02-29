@@ -45,6 +45,39 @@ app.post('/api/tasks', async (req, res) => {
         res.status(500).send('Internal Server Error');
     }
 });
+// Add a Otp
+app.post('/api/otp', async (req, res) => {
+    try {
+        const task= req.body.task;
+        console.log(task);
+        await redisclient.setEx(task.email, 60, task.otpGen)
+        console.log('-----------',await redisclient.get(task.email));
+        setTimeout(async () => {
+            console.log('-----------',await redisclient.ttl(task.email),task.email);
+        }, 6000)
+        res.send('Task added successfully');
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Internal Server Error');
+    }
+});
+// Add a verify  Otp
+app.post('/api/otp-verify', async (req, res) => {
+    try {
+        const task= req.body.task;
+      const otp= await redisclient.get(task.verEmail)
+      if(otp===task.otp){
+          console.log('-----------',await redisclient.get(task.verEmail));
+          res.json({message:'Otp Verified'})
+      }
+       else{
+        res.json({message:'Error Please verify again'});
+       }
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Internal Server Error');
+    }
+});
 
 // Delete a task
 app.delete('/api/tasks/:id', async (req, res) => {
