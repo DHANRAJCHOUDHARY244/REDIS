@@ -20,10 +20,13 @@ async function addOTP(req, res) {
         const emailResponse = await sendEmail(options);
 
         if (emailResponse.success) {
-            await redisClient.setEx(email, 60, otp);
-            res.send(emailResponse.response);
+            await redisClient.setEx(email, 60, `${otp}`);
+            console.log('----------------TTL VALUE:', await redisClient.ttl(email), email, 's OF ', email);
+            console.log(emailResponse.message);
+            res.json({ message: emailResponse.message });
         }
-        else{
+        else {
+            const err = 'Mail Not sent';
             handleServerError(res, err, emailResponse.error);
         }
 
@@ -34,17 +37,18 @@ async function addOTP(req, res) {
 
 async function verifyOTP(req, res) {
     try {
-        const { verEmail, otp } = req.body.task;
+        const { email, otp } = req.body.task;
 
-        const storedOTP = await redisClient.get(verEmail);
+        const storedOTP = await redisClient.get(email);
+        console.log(storedOTP, email);
         if (!storedOTP) {
             handleNotFoundError(res, 'OTP not found');
             return;
         }
-        if (storedOTP === otp) {
+        if (storedOTP == otp) {
             res.json({ message: 'OTP Verified' });
         } else {
-            res.json({ message: 'Error: Please verify again' }); 
+            res.json({ message: 'Error:Invalid OTP Or Expired !! Please verify again or Regenrate' });
         }
     } catch (err) {
         handleServerError(res, err, 'Failed to verify OTP');

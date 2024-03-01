@@ -1,5 +1,4 @@
 import { Box } from '@mui/material'
-import React from 'react'
 import TaskForm from './components/TaskForm'
 import Tasks from './components/Tasks'
 

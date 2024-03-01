@@ -55,7 +55,7 @@ function Header() {
                             textDecoration: 'none',
                         }}
                     >
-                        LOGO
+                        TODO/OTP
                     </Typography>
 
                     <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
@@ -117,7 +117,7 @@ function Header() {
                             textDecoration: 'none',
                         }}
                     >
-                        LOGO
+                        TODO/OTP
                     </Typography>
                     <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
                     <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>

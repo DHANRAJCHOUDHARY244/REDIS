@@ -1,13 +1,12 @@
-import React, { useState } from 'react';
 import { Box, Button, Input, TextField, Typography } from '@mui/material';
 import SendIcon from '@mui/icons-material/Send';
 import axios from 'axios';
+import { useState } from 'react';
 
 const TaskForm = () => {
     const [taskInput, setTaskInput] = useState({
         title: '',
         description: '',
-        link: '',
         date: ''
     });
 
@@ -26,7 +25,6 @@ const TaskForm = () => {
                 setTaskInput({
                     title: '',
                     description: '',
-                    link: '',
                     date: ''
                 });
             })
@@ -46,16 +44,6 @@ const TaskForm = () => {
                     variant="outlined"
                     color="secondary"
                     value={taskInput.title}
-                    onChange={handleChange}
-                    sx={{ width: '100%' }}
-                />
-                <TextField
-                    id="link"
-                    name="link"
-                    label="ImageLink"
-                    variant="outlined"
-                    color="secondary"
-                    value={taskInput.link}
                     onChange={handleChange}
                     sx={{ width: '100%' }}
                 />
