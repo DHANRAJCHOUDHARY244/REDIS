@@ -1,22 +1,19 @@
-const redis = require("redis"); 
-const redisclient = redis.createClient(); 
+const express = require('express');
+const cors = require('cors');
+const taskRoutes = require('./routes/tasks');
+const otpRoutes = require('./routes/otp');
 
-(async () => { 
-	await redisclient.connect(); 
-})(); 
 
-console.log("Connecting to the Redis"); 
+const app = express();
+app.use(cors());
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
-redisclient.on("ready", async() => { 
-	console.log("Connected!"); 
-	await redisclient.set('name','dhanraj')
-	console.log(await redisclient.get('name'));
-	await redisclient.lPush('enteries','dhanraj')
-	const a=await redisclient.lRange('enteries',0,-1)
-	console.log(a,'----------');
-}); 
 
-redisclient.on("error", (err) => { 
-	console.log("Error in the Connection"); 
-});  
+app.use('/api', taskRoutes);
+app.use('/api', otpRoutes);
 
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+});

@@ -9,7 +9,7 @@ app.use(express.urlencoded({ extended: true }));
 
 const redisclient = redis.createClient();
 
-(async () => {
+(async () => { 
     await redisclient.connect();
 })();
 
